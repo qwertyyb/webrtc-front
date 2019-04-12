@@ -5,8 +5,8 @@
       <div id="nav" class="mr-auto">
         <router-link to="/presentor">做直播</router-link> |
         <router-link to="/livings">看直播</router-link> |
-        <router-link to="/history">点播</router-link> |
-        <router-link to="/call">会议</router-link>
+        <router-link to="/video">视频</router-link> |
+        <router-link to="/call">对话</router-link>
       </div>
       <img src="http://via.placeholder.com/150" alt="" class="user-avatar h-12 w-12 rounded-full">
     </header>

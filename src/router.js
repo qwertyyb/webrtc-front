@@ -11,7 +11,8 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      redirect: '/videos'
     },
     {
       path: '/about',
@@ -35,6 +36,11 @@ export default new Router({
       path: '/live/:liveId',
       name: 'live',
       component: _ => import('./views/live')
+    },
+    {
+      path: '/videos',
+      name: 'videos',
+      component: _ => import('./views/video/index')
     }
   ]
 })

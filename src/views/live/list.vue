@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { getLivingList } from '@/api/live'
+import { getLivingList } from '@/api'
 
 export default {
   name: 'page-livings',
