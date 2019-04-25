@@ -1,7 +1,7 @@
 module.exports = {
   devServer: {
     proxy: {
-      '^/webrtc': {
+      '^/socket.io': {
         target: 'http://localhost:8443',
         changeOrigin: true,
         ws: true

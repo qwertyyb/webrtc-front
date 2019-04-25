@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import store from './store'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -41,6 +42,33 @@ export default new Router({
       path: '/videos',
       name: 'videos',
       component: _ => import('./views/video/index')
+    },
+    {
+      path: '/call',
+      name: 'call',
+      component: _ => import('./views/call/index')
+    },
+    {
+      path: '/accept',
+      name: 'acceptcall',
+      component: _ => import('./views/call/accept')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: _ => import('./views/login')
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (!store.state.token && to.name !== 'login') {
+    return next('/login')
+  }
+  if (store.state.token && to.name === 'login') {
+    return next('/')
+  }
+  next()
+})
+
+export default router

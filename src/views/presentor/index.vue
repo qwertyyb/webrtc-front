@@ -64,6 +64,10 @@ export default {
       presentor.on('start', () => {
         this.status = 'living'
       })
+      presentor.on('error', error => {
+        console.log(error)
+        this.stop()
+      })
       presentor.start()
     },
     stop () {

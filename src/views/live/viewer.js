@@ -1,6 +1,7 @@
 import { iceServers } from '@/config/webrtc'
 import kurentoUtils from 'kurento-utils'
 import io from 'socket.io-client'
+import store from '../../store'
 
 class Viewer {
   socket = null
@@ -8,37 +9,54 @@ class Viewer {
   webRtcPeer = null
   events = {
     start: [],
-    stop: []
+    stop: [],
+    presentorgone: []
   }
   constructor (videoDom, presentorId) {
     console.log(videoDom)
     this.socket = io({
-      path: '/webrtc',
+      path: '/socket.io/webrtc',
       query: {
+        token: store.state.token,
         presentorId
       },
-      reconnectionAttempts: 5
+      reconnection: false
+    })
+    this.socket.on('error', error => {
+      this.emit('error', error)
+    })
+    this.socket.on('connect_error', error => {
+      console.log('error')
+      this.emit('error', error)
     })
     this.videoDom = videoDom
+    videoDom.addEventListener('canplay', this._onVideoCanplay)
+  }
+  _onVideoCanplay = _ => {
+    this.emit('start')
   }
   bindEvent = () => {
     const { socket, webRtcPeer } = this
     socket.on('startResponse', ({ sdpAnswer }) => {
       console.log('SDP answer received from server. Processing ...')
       webRtcPeer.processAnswer(sdpAnswer)
-      this.emit('start')
-    })
-    socket.on('error', ({ message }) => {
-      throw new Error('Error message from server: ' + message)
     })
     socket.on('iceCandidate', ({ candidate }) => {
       console.log('iceCandidate', candidate)
       webRtcPeer.addIceCandidate(candidate)
     })
+    socket.on('presentorgone', _ => {
+      this.videoDom.pause()
+      this.videoDom.srcObject = null
+      this.videoDom.load()
+      this.emit('presentorgone')
+      this.socket.close()
+      this.emit('stop')
+    })
+    console.log(webRtcPeer)
   }
   start = () => {
     const options = {
-      // videoDom: this.videoDom,
       remoteVideo: this.videoDom,
       onicecandidate: this.onIceCandidate,
       configuration: {
@@ -58,7 +76,7 @@ class Viewer {
       }))
     }).then(sdp => {
       console.info('Invoking SDP offer callback function ' + location.host)
-      this.socket.emit('viewer', {
+      this.socket.emit('createViewer', {
         sdpOffer: sdp
       })
     })
@@ -68,11 +86,10 @@ class Viewer {
     console.log('Stopping video call ...')
     if (this.webRtcPeer) {
       this.webRtcPeer.dispose()
+      console.log('dispose')
       this.webRtcPeer = null
     }
     this.socket.emit('stop')
-    this.socket.close()
-    this.emit('stop')
   }
 
   onIceCandidate = candidate => {
