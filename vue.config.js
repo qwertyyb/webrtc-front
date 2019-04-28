@@ -1,15 +1,15 @@
 module.exports = {
-  publicPath: '',
+  publicPath: '/front/',
   assetsDir: 'assets',
   devServer: {
     proxy: {
       '^/socket.io': {
-        target: 'http://webrtc.qwertyyb.cn',
+        target: 'https://webrtc.qwertyyb.cn',
         changeOrigin: true,
         ws: true
       },
       '^/api': {
-        target: 'http://webrtc.qwertyyb.cn',
+        target: 'https://webrtc.qwertyyb.cn',
         changeOrigin: true
       }
       // '^/socket.io': {

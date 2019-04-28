@@ -7,7 +7,7 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
-  base: 'front',
+  base: '/front/',
   routes: [
     {
       path: '/',
@@ -63,7 +63,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (!store.state.token && to.name !== 'login') {
-    return next('/login')
+    return next({ name: 'login' })
   }
   if (store.state.token && to.name === 'login') {
     return next('/')
