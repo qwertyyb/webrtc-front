@@ -1,6 +1,6 @@
 <template>
   <div class="page-live flex justify-center">
-    <div class="container-video flex justify-center flex-col items-center bg-black relative">
+    <div class="container-video flex justify-center flex-col p-2 items-center bg-black relative">
       <video :src="src" class="video w-full m-2" ref="video" autoplay
         poster="@/assets/webrtc.png"
       ></video>
@@ -8,7 +8,7 @@
         <span class="text-white mr-auto">状态: {{statusText}}</span>
       </div>
     </div>
-    <div class="container-message w-64 ml-4 flex flex-col justify-between">
+    <div class="container-message w-64 ml-4 flex flex-col justify-between" v-if="false">
       <div class="wrapper-message">
         这是消息内容
       </div>

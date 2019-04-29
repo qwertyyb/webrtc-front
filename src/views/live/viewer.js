@@ -83,13 +83,13 @@ class Viewer {
   }
 
   stop = () => {
-    console.log('Stopping video call ...')
+    console.log('Stopping viewer ...')
     if (this.webRtcPeer) {
       this.webRtcPeer.dispose()
       console.log('dispose')
       this.webRtcPeer = null
     }
-    this.socket.emit('stop')
+    this.socket.emit('stopViewer')
   }
 
   onIceCandidate = candidate => {

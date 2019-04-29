@@ -10,9 +10,7 @@ class Presentor {
     start: [],
     stop: [],
     error: [],
-    callaccepted: [],
-    callrejected: [],
-    callerror: []
+    message: []
   }
   constructor (localVideo) {
     this.socket = getNewSocket()
@@ -31,6 +29,9 @@ class Presentor {
     })
     this.socket.on('callerror', error => {
       this.emit('callerror', error)
+    })
+    this.socket.on('message', message => {
+      this.emit('message', message)
     })
     this.localVideo = localVideo
     localVideo.addEventListener('canplay', this._onVideoCanplay)
@@ -83,7 +84,6 @@ class Presentor {
         // 邀请某人对话
         invite: nickname
       })
-      // this.socket.emit('inviteViewer', { nickname })
     })
   }
 
@@ -94,7 +94,7 @@ class Presentor {
       this.webRtcPeer = null
     }
     this.localVideo.removeEventListener('canplay', this._onVideoCanplay)
-    this.socket.emit('stop')
+    this.socket.emit('stopPresentor')
     this.socket.close()
     this.emit('stop')
   }
