@@ -49,16 +49,16 @@ export default {
       src: null, // 'http://vt1.doubanio.com/201903181816/4191665522bbfd3a842c307fd67f0b25/view/movie/M/402410829.mp4',
       status: 'initial',
       messages: [
-        {
-          type: 'viewer-entry',
-          from: { nickname: '虚幻', avatar: 'https://via.placeholder.com/150' },
-          time: '12:12:12'
-        },
-        {
-          type: 'viewer-leave',
-          from: { nickname: '虚幻', avatar: 'https://via.placeholder.com/150' },
-          time: '12:12:12'
-        }
+        // {
+        //   type: 'viewer-entry',
+        //   from: { nickname: '虚幻', avatar: 'https://via.placeholder.com/150' },
+        //   time: '12:12:12'
+        // },
+        // {
+        //   type: 'viewer-leave',
+        //   from: { nickname: '虚幻', avatar: 'https://via.placeholder.com/150' },
+        //   time: '12:12:12'
+        // }
       ]
     }
   },
