@@ -10,24 +10,25 @@
       <el-col :span="8" class="ml-2">
         <el-button size="small" type="primary"
           @click="askACall" :disabled="status!='free'"
-        >{{status == 'free' ? '开始呼叫' : '正在呼叫...'}}</el-button>
+        >{{status == 'free' ? '呼叫' : '正在呼叫...'}}</el-button>
         <el-button size="small" type="danger" :disabled="status=='free'"
           @click="stopACall"
         >挂断</el-button>
       </el-col>
     </el-row>
-    <el-row :gutter="20" :hidden="status === 'free'">
-      <el-col :span="12">
-        <video src="" class="w-full m-2" id="self-video" ref="self-video" autoplay
-          poster="@/assets/webrtc.png"
-        ></video>
-        <p class="text-center">我</p>
-      </el-col>
-      <el-col :span="12">
-        <video src="" class="m-2 friend-video" ref="friend-video" autoplay
+    <el-row :gutter="10" :hidden="status === 'free'" class="mt-4">
+      <el-col :span="12" :offset="3" :hidden="status==='linking'" class="transition-all">
+        <video src="" class="m-2 friend-video border" ref="friend-video" autoplay
           poster="@/assets/webrtc.png"
         ></video>
         <p class="text-center">{{friend.nickname}}</p>
+      </el-col>
+      <el-col :span="status==='linking'? 12 : 6" :offset="status==='linking' ? 6 : 0" class="transition-all">
+        <video src="" class="w-full m-2 border" id="self-video" ref="self-video" autoplay
+          poster="@/assets/webrtc.png"
+          muted
+        ></video>
+        <p class="text-center">我</p>
       </el-col>
     </el-row>
   </div>
@@ -71,8 +72,8 @@ export default {
       this.stopACall()
       presentor = new Presentor(this.$refs['self-video'])
       presentor.on('error', this.onCallerror)
-      presentor.start(nickname.trim())
-      this.status = 'calling'
+      presentor.start(nickname.trim(), false)
+      this.status = 'linking'
       this.bindEvents()
     },
     stopACall () {
@@ -102,6 +103,7 @@ export default {
     },
     onCallaccepted ({ to, linkId }) {
       console.log(`呼叫已被${to.nickname}接听`)
+      this.status = 'calling'
       Notification.success({
         title: `呼叫已被${to.nickname}接听`,
         message: '正在建立连接...'
@@ -124,5 +126,7 @@ export default {
 </script>
 
 <style>
-
+.transition-all {
+  transition: all .4s;
+}
 </style>

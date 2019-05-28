@@ -50,7 +50,7 @@ class Presentor {
       webRtcPeer.addIceCandidate(candidate)
     })
   }
-  start = (nickname = null) => {
+  start = (nickname = null, record = true) => {
     const options = {
       // localVideo: this.localVideo,
       remoteVideo: this.localVideo,
@@ -82,7 +82,8 @@ class Presentor {
       this.socket.emit('createPresentor', {
         sdpOffer: sdp,
         // 邀请某人对话
-        invite: nickname
+        invite: nickname,
+        record
       })
     })
   }

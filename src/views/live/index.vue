@@ -65,6 +65,7 @@ export default {
       viewer.on('start', () => {
         this.status = 'living'
       })
+      viewer.on('presentorgone', this.stop)
       viewer.start()
     },
     stop () {

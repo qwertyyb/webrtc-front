@@ -28,6 +28,7 @@
       <div class="video-item border w-1/5 p-1 m-2 shadow" v-for="item in list" :key="item.id">
         <video :src="item.uri" controls
           class="w-full outline-none"
+          preload="none"
         ></video>
         <div class="info mt-2 leading-normal text-grey-darker text-sm tracking-wide">
           <div class="">创建时间: &nbsp;{{item.createdAt}}</div>

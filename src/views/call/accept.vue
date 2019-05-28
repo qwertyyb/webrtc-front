@@ -1,23 +1,25 @@
 <template>
   <div class="page-accept mx-8">
-    <el-row type="flex">
+    <el-row type="flex my-4">
       <el-col :span="20" class="flex items-center">
         <h1 class="font-bold text-2xl">正在通话</h1>
       </el-col>
       <el-col :span="4">
-        <el-button type="danger" @click="stopCall">挂断</el-button>
+        <el-button type="danger" size="small" @click="$router.back()">挂断</el-button>
       </el-col>
     </el-row>
     <el-row class="mx-4" :gutter="20">
-      <el-col :span="12" v-loading="selfLoading" element-loading-text="正在连接..." element-loading-spinner="el-icon-loading">
-        <video src="" autoplay class="w-full" ref="self-video" poster="@/assets/webrtc.png"></video>
-        <p class="text-center">我</p>
-      </el-col>
-      <el-col :span="12" v-loading="friendLoading" element-loading-text="正在连接..." element-loading-spinner="el-icon-loading">
+      <el-col :span="12" v-loading="friendLoading" class="transition-all" :offset="3"
+       element-loading-text="正在连接..." element-loading-spinner="el-icon-loading">
         <video src="" autoplay class="w-full" ref="friend-video"
           poster="@/assets/webrtc.png"
         ></video>
         <p class="text-center">{{inviter.nickname}}</p>
+      </el-col>
+      <el-col :span="6" v-loading="selfLoading" class="transition-all"
+        element-loading-text="正在连接..." element-loading-spinner="el-icon-loading">
+        <video src="" autoplay class="w-full" ref="self-video" poster="@/assets/webrtc.png" muted></video>
+        <p class="text-center">我</p>
       </el-col>
     </el-row>
   </div>
@@ -72,17 +74,19 @@ export default {
       presentor.on('start', () => {
         this.selfLoading = false
         presentor.socket.emit('acceptcall', { from: inviter })
-        viewer = new Viewer(this.$refs['friend-video'], linkId)
-        viewer.on('start', _ => {
-          this.friendLoading = false
-        })
-        viewer.on('presentorgone', _ => {
-          // 对方挂断
-          this.stopCall()
-        })
-        viewer.start()
       })
-      presentor.start()
+      presentor.start(null, false)
+
+      viewer = new Viewer(this.$refs['friend-video'], linkId)
+      viewer.on('start', _ => {
+        this.friendLoading = false
+      })
+      viewer.on('presentorgone', _ => {
+        // 对方挂断
+        this.stopCall()
+        this.$router.back()
+      })
+      viewer.start()
     },
     stopCall () {
       presentor && presentor.stop()
@@ -93,5 +97,7 @@ export default {
 </script>
 
 <style>
-
+.transition-all {
+  transition: all .4s;
+}
 </style>

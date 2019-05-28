@@ -13,19 +13,27 @@
     <div class="container-message w-64 rounded ml-4 flex flex-col justify-between bg-gray-200">
       <div class="wrapper-messages bg-gray-100 border p-2 overflow-y-auto">
         <template v-for="message in messages">
-          <div class="message-ite flex justify-center py-1 items-center mb-2 text-sm bg-gray-500 text-center rounded-full"
+          <div class="message-item flex justify-center py-1 items-center mb-2 text-sm bg-gray-500 text-center rounded-full"
+            :key="message.id" v-if="message.type == 'start'">
+            <span class="font-bold mr-1 text-yellow-300">直播已开始</span>
+          </div>
+          <div class="message-item flex justify-center py-1 items-center mb-2 text-sm bg-gray-500 text-center rounded-full"
             :key="message.id" v-if="message.type == 'viewer-entry'">
             <span>{{message.time}}</span>
             <img :src="message.from.avatar" alt="" class="w-6 mx-1 rounded-full">
             <span class="font-bold mr-1 text-blue-600">{{message.from.nickname}}</span>
             <span>已 <b>进入</b> 直播间</span>
           </div>
-          <div class="message-ite flex justify-center py-1 items-center mb-2 text-sm bg-red-600 text-center rounded-full"
+          <div class="message-item flex justify-center py-1 items-center mb-2 text-sm bg-red-300 text-center rounded-full"
             :key="message.id" v-if="message.type == 'viewer-leave'">
             <span>{{message.time}}</span>
             <img :src="message.from.avatar" alt="" class="w-6 mx-1 rounded-full">
             <span class="font-bold mr-1 text-blue-900">{{message.from.nickname}}</span>
             <span>已 <b>离开</b> 直播间</span>
+          </div>
+          <div class="message-item flex justify-center py-1 items-center mb-2 text-sm bg-red-600 text-center rounded-full"
+            :key="message.id" v-if="message.type == 'stop'">
+            <span class="font-bold mr-1 text-blue-900">直播已结束</span>
           </div>
         </template>
       </div>
@@ -49,6 +57,12 @@ export default {
       src: null, // 'http://vt1.doubanio.com/201903181816/4191665522bbfd3a842c307fd67f0b25/view/movie/M/402410829.mp4',
       status: 'initial',
       messages: [
+        // {
+        //   type: 'start'
+        // },
+        // {
+        //   type: 'stop'
+        // },
         // {
         //   type: 'viewer-entry',
         //   from: { nickname: '虚幻', avatar: 'https://via.placeholder.com/150' },
@@ -90,6 +104,9 @@ export default {
       console.log(presentor)
       presentor.on('start', () => {
         this.status = 'living'
+        this.messages.push({
+          type: 'start'
+        })
       })
       presentor.on('error', error => {
         console.log(error)
@@ -105,6 +122,9 @@ export default {
       presentor && presentor.stop()
       presentor = null
       this.status = 'initial'
+      this.messages.push({
+        type: 'stop'
+      })
     }
   }
 }

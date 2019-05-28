@@ -13,7 +13,7 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
-      redirect: '/videos'
+      redirect: '/livings'
     },
     {
       path: '/about',
