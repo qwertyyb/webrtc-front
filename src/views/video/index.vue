@@ -1,6 +1,6 @@
 <template>
-  <div class="page-video-list px-16">
-    <div class="flex items-center justify-center">
+  <div class="page-video-list px-4">
+    <div class="flex items-center justify-center flex-wrap">
       <div class="flex items-center">
         <div class="w-12 text-right mr-2">时间</div>
         <el-date-picker type="datetimerange"
@@ -20,6 +20,10 @@
         <div class="w-12">地点</div>
         <el-input v-model="form.location" size="small"></el-input>
       </div>
+      <div class="flex items-center p-2">
+        <div class="w-12">主播</div>
+        <el-input v-model="form.nickname" size="small"></el-input>
+      </div>
       <div class="ml-2">
         <el-button size="small" type="primary" @click="search">搜索</el-button>
       </div>
@@ -29,10 +33,12 @@
         <video :src="item.uri" controls
           class="w-full outline-none"
           preload="none"
+          poster="@/assets/webrtc.png"
         ></video>
         <div class="info mt-2 leading-normal text-grey-darker text-sm tracking-wide">
           <div class="">创建时间: &nbsp;{{item.createdAt}}</div>
           <div class="">地点: &nbsp;{{item.location}}</div>
+          <div class="">主播: &nbsp;{{item.nickname}}</div>
         </div>
       </div>
     </div>
@@ -59,7 +65,8 @@ export default {
         createdAtRange: ['2018-01-01 08:00:00', '2020-01-01 08:00:00'],
         minDuration: 0,
         maxDuration: 100,
-        location: ''
+        location: '',
+        nickname: ''
       },
       list: [],
       page: 1,
