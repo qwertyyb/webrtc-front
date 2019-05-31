@@ -3,6 +3,7 @@
     <div class="container-video flex justify-center flex-col items-center bg-black p-2 relative">
       <video :src="src" class="video w-full" ref="video" autoplay
         poster="@/assets/webrtc.png"
+        muted
       ></video>
       <div class="living-controls-wrapper mt-2 flex w-full items-center">
         <span class="text-white mr-auto">状态: {{statusText}}</span>
